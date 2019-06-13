@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+eureka:
+  client:
+    healthcheck:
+      enabled: true
+  instance:
+    lease-renewal-interval-in-seconds: 2
+    lease-expiration-duration-in-seconds: 3

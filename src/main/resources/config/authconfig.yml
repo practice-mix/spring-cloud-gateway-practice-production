@@ -1,0 +1,50 @@
+login-auth:
+  exclude-patterns:
+    - /testApi/**
+    - /challgengeVote.html
+    - /index.html
+    - /web/**
+    - /tool/**
+    - /error
+    - /activityApi/randPhotos
+    - /activityApi/activityInfo
+    - /activityApi/activityPhotos
+    - /integralApi/listGoods
+    - /integralApi/makeIntegral
+    - /photoApi/clickLike
+    - /photoApi/otherPhotos
+    - /photoApi/userPhotoCount
+    - /snsActApi/recommend
+    - /snsActApi/unsafe/superLikeByErp
+    - /snsActApi/unsafe/likeByErp
+    - /snsUserApi/user/{targetUserId}
+    - /snsUserApi/listChallengeThumb/{targetUserId}
+    - /snsUserApi/listHeadImg/{targetUserId}
+    - /userApi/report
+    - /userApi/postData
+    - /userApi/otherUserInfo
+    - /heartbeat
+    - /web/kissApi/getKissActivityStatus
+    - /web/kissApi/switchKissActivityStatus
+    - /web/kissApi/rankingBoard
+    - /web/kissApi/rankingOne
+    - /web/kissApi/kissUserInfo
+    - /web/userApi/login
+    - /web/test.html
+    - /web/kissEnter
+    - /tool/web/recommendIndex
+    - /shopApi/list
+    - /shopApi/state
+    - /shopApi/listCount
+    - /shopApi/recommendList
+    - /shopApi/recommendDetails
+    - /erpUser/refreshUserHeadStatus
+    - /common/info/getCountryCode
+    - /common/info/getAreaIdByIp
+    - /common/info/getAllArea
+    - /act/fl/{urlId}/{resId}/{lang}/{channel}
+    - /act/listResource
+    - /act/upload
+  include-patterns:
+    - /**
+

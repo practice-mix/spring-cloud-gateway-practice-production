@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <properties>
+        <property name="LOG_HOME">logs</property>
+        <property name="CIRCUIT_BREAKER_FILE_NAME">circuit_breaker</property>
+        <property name="CIRCUIT_BREAKER_HISTORY_LOG_DIR">circuit_breaker_history_logs</property>
+        <property name="ACCESS_STAT_FILE_NAME">access_stat</property>
+        <property name="ACCESS_STAT_HISTORY_LOG_DIR">access_stat_history_logs</property>
+    </properties>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+        <RollingRandomAccessFile name="breakerFile"
+                                 fileName="${LOG_HOME}/${CIRCUIT_BREAKER_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${CIRCUIT_BREAKER_HISTORY_LOG_DIR}/${CIRCUIT_BREAKER_FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="accessStatFile"
+                                 fileName="${LOG_HOME}/${ACCESS_STAT_FILE_NAME}.log"
+                                 filePattern="${LOG_HOME}/${ACCESS_STAT_HISTORY_LOG_DIR}/${ACCESS_STAT_FILE_NAME}-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout
+                    pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="20 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+        <Logger name="breakerLog" level="info" additivity="false">
+            <AppenderRef ref="breakerFile"/>
+        </Logger>
+        <Logger name="accessStatLog" level="info" additivity="false">
+            <AppenderRef ref="accessStatFile"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>

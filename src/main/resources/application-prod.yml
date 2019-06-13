@@ -1,0 +1,44 @@
+server:
+  port: 81
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: grid_route
+          uri: lb://ufoto-app-api
+          predicates:
+            - Path=/grid/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: ufoto-app-api-fallback
+                fallbackUri: forward:/breaker/app-api/fallback
+        - id: app_api_route
+          uri: lb://ufoto-app-api
+          predicates:
+            - Path=/**
+          filters:
+            - Auth
+            - ActiveStat
+            - name: Hystrix
+              args:
+                name: ufoto-app-api-fallback
+                fallbackUri: forward:/breaker/app-api/fallback
+  redis:
+    host: 172.31.56.36
+    password: 65fJCRVoA7SjjgEV
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.31.55.106:8080/eureka/,http://172.31.49.68:8080/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+

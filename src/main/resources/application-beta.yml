@@ -1,0 +1,47 @@
+server:
+  port: 9090
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: grid_route
+          uri: lb://ufoto-app-api
+          predicates:
+            - Path=/grid/**
+          filters:
+            - StripPrefix=1
+            - name: Hystrix
+              args:
+                name: ufoto-app-api-fallback
+                fallbackUri: forward:/breaker/app-api/fallback
+        - id: app_api_route
+          uri: lb://ufoto-app-api
+          predicates:
+            - Path=/**
+          filters:
+#            - Auth #todo needing redeploy
+#            - ActiveStat
+            - name: Hystrix
+              args:
+                name: ufoto-app-api-fallback
+                fallbackUri: forward:/breaker/app-api/fallback
+  redis:
+    host: redis-beta.mihgdg.ng.0001.use1.cache.amazonaws.com
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.31.51.205:1111/eureka/
+
+logging:
+#  level:
+#    root: debug
+#    org.springframework.cloud.gateway: TRACE
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false

@@ -1,0 +1,107 @@
+server:
+  port: 8080
+
+#login-auth:
+#  exclude-patterns:
+#    - /ft/auth/exclude/**
+#  include-patterns:
+#    - /ft/auth/include/**
+#
+#social-active-stat:
+#  uri-prefixes:
+#    - /ft/auth
+
+spring:
+  cloud:
+    gateway:
+      routes:
+#        - id: grid_route
+#          uri: lb://ufoto-app-api
+#          predicates:
+#            - Path=/grid/**
+#          filters:
+#            - StripPrefix=1
+#            - name: Hystrix
+#              args:
+#                name: ufoto-app-api-fallback
+#                fallbackUri: forward:/breaker/app-api/fallback
+#        - id: ft_stat_rule # for function test of stat
+##          uri: http://httpbin.org
+#          uri: http://localhost
+#          predicates:
+#            - Path=/ft/stat/*/** # /ut/stat/social/** , /ut/stat/user/**
+#          filters:
+#            - ActiveStat
+#            - StripPrefix=3
+        - id: ft_auth_rule # for function test of auth
+          uri: http://httpbin.org
+          predicates:
+            - Path=/ft/auth/*/** # /ut/auth/include/** , /ut/auth/exclude/**
+          filters:
+            - Auth
+            - ActiveStat
+            - StripPrefix=3
+#        - id: ut_rule # for unit test
+#          uri: http://httpbin.org
+#          predicates:
+#            - Path=/ut/**
+#          filters:
+#            - StripPrefix=1
+#        - id: say_hello_rule
+#          uri: lb://say-hello
+##          uri: http://localhost:8070
+#          predicates:
+#            - Path=/hello/**
+#          filters:
+#            - StripPrefix=1
+#            - name: Hystrix
+#              args:
+#                name: ufoto-app-api-fallback
+#                fallbackUri: forward:/breaker/app-api/fallback
+        - id: app_api_route
+          uri: lb://ufoto-app-api
+#          uri: http://localhost:8070
+          predicates:
+            - Path=/**  # test app-api
+          filters:
+            - Auth
+#            - ActiveStat
+            - name: Hystrix
+              args:
+                name: ufoto-app-api-fallback
+                fallbackUri: forward:/breaker/app-api/fallback
+  redis:
+    host: localhost
+    port: 6379
+#    host: 192.168.60.99
+#    port: 6379
+#    password: 123456
+
+eureka:
+  client:
+    serviceUrl:
+#      defaultZone: http://192.168.60.199:1111/eureka/
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    com.ufoto.gateway: debug
+#    root: trace
+    org.springframework.cloud.gateway: info
+#    com.netflix.discovery: warn
+#    org.apache.http: warn
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+#        timeout:
+#          enabled: false
+#ribbon:
+#  ReadTimeout: 5000
+#  ConnectTimeout: 5000
+#  MaxAutoRetries: 0
+#  MaxAutoRetriesNextServer: 1

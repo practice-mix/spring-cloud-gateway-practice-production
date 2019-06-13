@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: ufoto-cloud-gateway
+  config:
+    additional-location: classpath:/config/authconfig.yml,classpath:/config/statconfig.yml

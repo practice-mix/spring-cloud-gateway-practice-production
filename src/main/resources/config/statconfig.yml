@@ -1,0 +1,5 @@
+social-active-stat:
+  uri-prefixes:
+    - /snsActApi
+    - /snsUserApi
+    - /chatApi
